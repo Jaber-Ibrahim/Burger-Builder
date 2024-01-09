@@ -1,0 +1,15 @@
+.NavigationItems {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+@media(max-width:499px) {
+    .NavigationItems {
+        flex-flow: column;
+        gap: 32px;
+        margin-top: 40px;
+    }
+}
+
+
