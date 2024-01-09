@@ -8,6 +8,7 @@ import { ErrorHandler } from '../../hoc/importHoc'
 
 const Orders = () => {
     const [orders,setOrders] = useState([])
+    const [loading,setLoading] = useState(true)
 
     useEffect(()=>{
         axiosInstance.get("orders.json")
@@ -22,9 +23,10 @@ const Orders = () => {
             }
             setOrders(fetchedOrders)
             // console.log(fetchedOrders)
-            // setOrders(res.data)
-         })
-         .catch(error => {
+            setLoading(false)
+        })
+        .catch(error => {
+             setLoading(false)
             console.log(error)
          }) 
     },[])
@@ -35,21 +37,32 @@ const Orders = () => {
     }
 
      
-    let myOrders = <Spinner/>
+
+    let output 
+
     // loading ? myOrders = <Spinner/> : myOrders = orders.map((order) =>
-    if(myOrders.length > 0) {
-        myOrders = orders.map((order) => 
-        // console.log(typeof(order.totalPrice))
-            <Order 
-                key = {order.key}
-                price = {order.totalPrice}
-                delete = {deleteHandler(order.key)} 
-                ingredients = {order.ingredients}/>
-                )
-    } 
+    
+
+    loading ? output = <Spinner/> : 
+    orders.length === 0 ? output = <p className={classes.NoData}>you have not ordered yet !!</p>
+    : 
+    output = orders.map((order) => 
+    // console.log(typeof(order.totalPrice))
+        <Order 
+            key = {order.key}
+            price = {order.totalPrice}
+            delete = {deleteHandler(order.key)} 
+            ingredients = {order.ingredients}/>
+            )
+
+
+
+    // else {
+    //     myOrders = <p>you have not ordered yet !!</p>
+    // }
             return (
             <div>
-                {myOrders}
+                {output}
             </div>
             )
         }
